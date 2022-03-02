@@ -23,6 +23,13 @@ function App() {
 
     const [title, setTitle] = useState<string>('')
 
+    const [error, setError] = useState<boolean>(false)
+
+    //логика соощения ошибки, если error не пустая строка
+    const errorMessage = (error:boolean) => {
+      setError(error)
+    }
+
 
     //логика фильтрации
     //замена фильтра в стейте
@@ -83,6 +90,9 @@ function App() {
                         callback={titleForTask}
                         callbackAddTask={addTask}
                         title={title}
+                        callbackError={errorMessage}
+                        error={error}
+                       // setError={errorMessage}
                 />
                 <Body tasks={tasksAfterFilter}
                       deleteTask={deleteButton}

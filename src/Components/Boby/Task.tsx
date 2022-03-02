@@ -8,18 +8,22 @@ export type TaskType = {
     isDone: boolean
     title: string
     deleteTask: (id: string) => void
-    changeStatus: (taskId: string, isDone: boolean)=>void
+    changeStatus: (taskId: string, isDone: boolean) => void
 }
-export const Task = ({id, isDone,
+export const Task = ({
+                         id, isDone,
                          title, deleteTask,
-                         changeStatus}:TaskType) => {
+                         changeStatus
+                     }: TaskType) => {
     return (
         <li key={id}>
             <Checkbox changeStatus={changeStatus}
                       taskId={id}
                       isDone={isDone}
             />
-            <span>{title}</span> <Button title={'X'} callback={()=>deleteTask(id)}/>
+            <span>{title}</span> <Button title={'X'}
+                                         callback={() => deleteTask(id)}
+        />
         </li>
     );
 };
