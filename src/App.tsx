@@ -3,6 +3,7 @@ import './App.css';
 import {Header} from "./Components/Header/Header";
 import {Body, TaskTypeProps} from "./Components/Boby/Body";
 import {v1} from "uuid";
+import { TodoList } from './Components/TodoList/TodoList';
 
 
 
@@ -86,18 +87,19 @@ function App() {
     return (
         <div className="App">
             <div>
-                <Header header={'Whats learn'}
-                        callback={titleForTask}
-                        callbackAddTask={addTask}
-                        title={title}
-                        callbackError={errorMessage}
-                        error={error}
-                       // setError={errorMessage}
-                />
-                <Body tasks={tasksAfterFilter}
-                      deleteTask={deleteButton}
-                      filterCallback={changeFilter}
-                      changeStatus={changeStatus}
+                <TodoList
+                    header={'Whats learn'}
+                    callback={titleForTask}
+                    callbackAddTask={addTask}
+                    title={title}
+                    callbackError={errorMessage}
+                    error={error}
+
+                    tasks={tasksAfterFilter}
+                    deleteTask={deleteButton}
+                    filterCallback={changeFilter}
+                    filter={filter}
+                    changeStatus={changeStatus}
                 />
             </div>
         </div>

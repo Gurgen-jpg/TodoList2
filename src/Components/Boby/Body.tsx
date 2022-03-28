@@ -10,16 +10,16 @@ export type TaskTypeProps = {
 }
 type BodyTypeProps = {
     tasks: Array<TaskTypeProps>
-    //callback: (tasks: Array<TaskTypeProps>)=> void
     deleteTask: (id: string) => void
     filterCallback: (newFilter: FilterType)=> void
+    filter: 'all' | 'active' | 'completed'
     changeStatus: (taskId: string, isDone: boolean)=>void
 }
 
 
 export const Body = ({tasks, deleteTask,
                          filterCallback,
-                         changeStatus}:BodyTypeProps, ) => {
+                         changeStatus, filter}:BodyTypeProps) => {
     return (
         <>
             <ul>
@@ -34,7 +34,10 @@ export const Body = ({tasks, deleteTask,
                     )
                 })}
             </ul>
-            <FilterButtons callback={filterCallback}/>
+            <FilterButtons
+                callback={filterCallback}
+                filter={filter}
+            />
         </>
     );
 };

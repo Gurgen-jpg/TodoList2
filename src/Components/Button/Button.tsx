@@ -3,6 +3,7 @@ import React from 'react';
 type ButtonTypeProps = {
     title: string
     callback: ()=> void
+    className?:string
 }
 
 export const Button = (props: ButtonTypeProps) => {
@@ -10,7 +11,7 @@ export const Button = (props: ButtonTypeProps) => {
       props.callback()
     }
     return (
-            <button onClick={onclickButtonHandler}>{props.title}</button>
+            <button className={props.className} onClick={onclickButtonHandler}>{props.title}</button>
     );
 };
 
