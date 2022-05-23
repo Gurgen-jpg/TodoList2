@@ -1,41 +1,40 @@
 import React from 'react';
-import {Header} from "../Header/Header";
-import {Body, TaskTypeProps} from "../Boby/Body";
-import {FilterType} from "../../App";
+import {FilterType, TaskType} from "../../App";
+import {FilterButtons} from '../Boby/FilterButtons';
+import {Task} from "../Boby/Task";
+import {AddItemForm} from "../AddItem/AddItemForm";
+
 
 export type TodoListType = {
-/*пропсы в HEADER*/
+    todoId: string
     header: string
-    callbackAddTask: (title: string) => void
-    callback: (newTitle: string) => void
-    title: string
-    callbackError: (error: boolean) => void
-    error: boolean
-/*пропсы в BODY*/
-    tasks: Array<TaskTypeProps>
+    tasks: Array<TaskType>
+    addTask: (todolistId: string, title: string) => void
     deleteTask: (id: string) => void
-    filterCallback: (newFilter: FilterType)=> void
+    filterCallback: (todoId: string, newFilter: FilterType) => void
     filter: 'all' | 'active' | 'completed'
-    changeStatus: (taskId: string, isDone: boolean)=>void
+    changeStatus: (taskId: string, isDone: boolean) => void
 }
 
-export const TodoList = (props:TodoListType) => {
+export const TodoList = (props: TodoListType) => {
+    const addTask = (title: string) => {
+      props.addTask(props.todoId, title)
+    }
+
+
     return (
         <div>
-            <Header header={props.header}
-                    callback={props.callback}
-                    callbackAddTask={props.callbackAddTask}
-                    title={props.title}
-                    callbackError={props.callbackError}
-                    error={props.error}
-                // setError={errorMessage}
-            />
-            <Body tasks={props.tasks}
-                  deleteTask={props.deleteTask}
-                  filterCallback={props.filterCallback}
-                  filter={props.filter}
-                  changeStatus={props.changeStatus}
-            />
+            <h3>{props.header}</h3>
+            <AddItemForm addTask={addTask}/>
+            {
+                props.tasks.map((t) =>
+                    <Task key={t.id} task={t} todoId={props.todoId}
+                          isDone={t.isDone} title={t.title}
+                          deleteTask={props.deleteTask} changeStatus={props.changeStatus}
+                    />
+                )
+            }
+            <FilterButtons todoId={props.todoId} callback={props.filterCallback} filter={props.filter}/>
         </div>
     );
 };
