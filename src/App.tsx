@@ -28,7 +28,6 @@ function App() {
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ])
-
     let [tasks, setTasks] = useState<TasksStateType>({
         [todolistId1]: [
             {id: v1(), title: 'HTML', isDone: true},
@@ -46,14 +45,41 @@ function App() {
         ]
     });
 
+    //логика фильтрации и статуса
+    const changeStatus = (todolistId: string, taskId: string, isDone: boolean) => {
+        setTasks({
+            ...tasks, [todolistId]: tasks[todolistId].map((task) => task.id === taskId
+                ? {...task, isDone: isDone}
+                : {...task})
 
-    /*const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')*/
-
-    //логика фильтрации
-    //замена фильтра в стейте
+        })
+        console.log(`STATUS`, taskId, isDone)
+    }
     const changeFilter = (todolistID: string, filterValue: FilterType) => {
         setTodolists(todolists.map(tl => tl.id === todolistID ? {...tl, filter: filterValue} : tl))
     }
+
+    //Логика удаления
+    // Функция удаления таски
+    const deleteTask = (todolistId: string, taskId: string) => {
+        setTasks({
+            ...tasks, [todolistId]: tasks[todolistId].filter((task) => task.id !== taskId)
+        })
+    }
+    //Ф-ция удаления тудуЛиста
+    const removeTodolist = (todolistId: string) => {
+        setTodolists(todolists.filter((todo) => todo.id !== todolistId))
+        delete tasks[todolistId] //зачистка тасок
+        setTasks({...tasks})
+    }
+
+    // логика добавления
+    //Добавить таску
+    const addTask = (todolistId: string, title: string) => {
+        let task = {id: v1(), title: title, isDone: false}
+        setTasks({...tasks, [todolistId]: [task, ...tasks[todolistId]]})
+    }
+    //Добавить ТудуЛист
     const addTodolist = (title: string) => {
         const newID = v1();
         setTodolists([{id: newID, title, filter: 'all'}, ...todolists])
@@ -61,49 +87,7 @@ function App() {
             ...tasks, [newID]: []
         })
     }
-    //перерисовка стейта с задачами в зависимости от фильтра, take FILTER, return ARRAY
-    const filterTasks = () => {
-        /* switch (filter) {
-             case "completed":
-                 return tasks.filter(el => el.isDone)
-             case "active":
-                 return tasks.filter(el => !el.isDone)
-             default:
-                 return tasks
-         }*/
-    }
 
-    //присвоить значение фильтрации и прокидываю в пропсы <Body/>
-    const tasksAfterFilter = filterTasks()
-
-    //Логика удаления
-    // Функция удаления таски
-    const deleteButton = (id: string) => {
-        /* const deletedTasks = tasks.filter((task ) => {
-             return (task.id !== id)
-         })
-         setTasks(deletedTasks)*/
-    }
-
-    //логика добавления новой задачи в массив tasks
-    const addTask = (todolistId: string, title: string) => {
-        let task = {id: v1(), title: title, isDone: false}
-        setTasks({...tasks, [todolistId]: [task, ...tasks[todolistId]]})
-    }
-    //изменение в title (можно перекинуть title через пропсы, но этого делать не буду
-
-
-    //Add new task in my State of Tasks
-
-
-    //Логика Смены статуса выполнено / невыполнено
-    //Функция принимает номер ID(:string) инпута в котором был ивент и меняет свойство isDone для
-    //объекта {task} перезаписыва массив tasks
-    const changeStatus = (taskId: string) => {
-        /*setTasks(tasks.map((el) =>
-            (el.id === taskId) ? {...el, isDone:!el.isDone}: el ))
-          console.log(tasks)*/
-    }
     return (
         <div className="App">
             <AddItemForm addTask={addTodolist}/>
@@ -122,9 +106,10 @@ function App() {
                                 key={tl.id}
                                 todoId={tl.id}
                                 header={tl.title}
+                                removeTodolist={removeTodolist}
                                 tasks={tasksForTodolist}
                                 addTask={addTask}
-                                deleteTask={deleteButton}
+                                deleteTask={deleteTask}
                                 filterCallback={changeFilter}
                                 filter={tl.filter}
                                 changeStatus={changeStatus}

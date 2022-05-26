@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEventHandler, useState} from 'react';
 
 export type AddItemFormType = {
     addTask: (title: string) => void
@@ -6,12 +6,12 @@ export type AddItemFormType = {
 export const AddItemForm = (props: AddItemFormType) => {
 
     const [newTitle, setNewTitle] = useState<string>('')
-    const [error, setError] = useState<string>('')
+    const [error, setError] = useState<null | string>(null)
 
     const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTitle(e.currentTarget.value)
         if (e.currentTarget.value.trim() !== '') {
-            setError('')
+            setError(null)
         }
     }
     const onClickHandler = () => {
@@ -26,7 +26,9 @@ export const AddItemForm = (props: AddItemFormType) => {
     return (
         <div>
             <div>
-                <input onChange={inputHandler} value={newTitle}/>
+                <input onChange={inputHandler}
+                       value={newTitle}
+                       />
                 <button onClick={onClickHandler}>+</button>
             </div>
             <span>{error}</span>

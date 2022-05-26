@@ -1,31 +1,42 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import {Button} from "../Button/Button";
-import {Checkbox} from "../Checkbox/Checkbox";
 import {TaskType} from "../../App";
 
 export type TaskListType = {
     task: TaskType
     todoId: string
-    isDone: boolean
+    taskStatus: boolean
     title: string
-    deleteTask: (id: string) => void
-    changeStatus: (taskId: string, isDone: boolean) => void
+    deleteTask: (todolistId: string, taskId: string) => void
+    changeStatus: (todolistId: string, taskId: string, isDone: boolean) => void
 }
-export const Task = ({ task,
-                         todoId, isDone,
+export const Task = ({
+                         task,
+                         todoId, taskStatus,
                          title, deleteTask,
                          changeStatus
                      }: TaskListType) => {
-    return (
-        <li key={task.id}>
-            <Checkbox changeStatus={changeStatus}
-                      taskId={task.id}
-                      isDone={isDone}
-            />
-            <span>{title}</span> <Button title={'X'}
-                                         callback={() => deleteTask(task.id)}
+
+    const buttonHandler = (taskId: string) => {
+        deleteTask(todoId, taskId)
+    }
+
+
+const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    changeStatus(todoId, task.id, e.currentTarget.checked)}
+
+return (
+    <li key={task.id}>
+
+        <input type="checkbox"
+               onChange={onChangeHandler}
+               checked={task.isDone}
         />
-        </li>
-    );
+
+        <span>{title}</span> <Button title={'X'}
+                                     callback={() => buttonHandler(task.id)}
+    />
+    </li>
+);
 };
 
