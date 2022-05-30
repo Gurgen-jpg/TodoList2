@@ -4,17 +4,12 @@ import {v1} from "uuid";
 import {TodoList} from './Components/TodoList/TodoList';
 import {AddItemForm} from "./Components/AddItem/AddItemForm";
 import {useDispatch} from "react-redux";
-import {addTodolistAC, changeFilterAC, removeTodolistAC} from "./Bll/Todolist-reducer";
+import {addTodolistAC, changeFilterAC, FilterType, removeTodolistAC, TodolistType} from "./Bll/Todolist-reducer";
 import {addTaskAC, changeTaskStatusAC, deleteTaskAC} from "./Bll/Task-reducer";
 import {AppRootSelector} from "./Bll/Store";
 
 
-export type FilterType = 'all' | 'active' | 'completed'
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterType
-}
+
 export type TaskType = {
     id: string
     title: string
@@ -24,7 +19,7 @@ export type TasksStateType = { [key: string]: Array<TaskType> }
 
 function App() {
     const dispatch = useDispatch();
-    const todolists = AppRootSelector<TodolistType[]>(state => state.todolist)
+    const todolists = AppRootSelector(state => state.todolist)
     const tasks = AppRootSelector<TasksStateType>(state => state.tasks)
 
     //логика фильтрации и статуса
@@ -48,14 +43,11 @@ function App() {
     // логика добавления
     //Добавить таску
     const addTask = (todolistId: string, title: string) => {
-        let task = {id: v1(), title: title, isDone: false}
-        dispatch(addTaskAC(todolistId, task))
-
+        dispatch(addTaskAC(todolistId, title))
     }
     //Добавить ТудуЛист
     const addTodolist = (title: string) => {
         dispatch(addTodolistAC(title))
-
     }
     return (
         <div className="App">

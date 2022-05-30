@@ -1,7 +1,8 @@
 import React from 'react';
+import { FilterType } from '../../Bll/Todolist-reducer';
 
 
-import {FilterType} from "../../App";
+
 import {Button} from "../Button/Button";
 
 type FilterButtonsTypeProps = {

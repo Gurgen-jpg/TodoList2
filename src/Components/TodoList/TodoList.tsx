@@ -1,15 +1,16 @@
 import React from 'react';
-import {FilterType, TaskType} from "../../App";
+import {TaskType} from "../../App";
 import {FilterButtons} from '../Boby/FilterButtons';
 import {Task} from "../Boby/Task";
 import {AddItemForm} from "../AddItem/AddItemForm";
+import {FilterType} from "../../Bll/Todolist-reducer";
 
 
-export type TodoListType = {
+export type TodoListPropsType = {
     todoId: string
     header: string
     filterCallback: (todoId: string, newFilter: FilterType) => void
-    filter: 'all' | 'active' | 'completed'
+    filter: FilterType
     removeTodolist: (id: string) => void
 
     tasks: Array<TaskType>
@@ -19,7 +20,7 @@ export type TodoListType = {
     changeStatus: (todolistId: string,taskId: string, isDone: boolean) => void
 }
 
-export const TodoList = (props: TodoListType) => {
+export const TodoList = (props: TodoListPropsType) => {
 
     const addTask = (title: string) => {
         props.addTask(props.todoId, title)
